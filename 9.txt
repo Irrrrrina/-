@@ -1,0 +1,21 @@
+$mod51
+
+jmp main
+
+org 13h
+xrl b, #28
+reti
+
+main:
+mov ie, #84h
+mov tcon, #04h
+
+cyc:
+setb p3.6
+clr p3.6
+mov a, p1
+add a, b
+mov p0, a
+jmp cyc
+
+end

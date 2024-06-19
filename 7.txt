@@ -1,0 +1,39 @@
+#include <8052.h>
+
+wait(int t)
+{
+t = t*375;
+RCAP2H = (-t)»8;
+RCAP2L = -t;
+while(TF2 == 0);
+TF2 = 0;
+}
+
+void main()
+{
+unsigned short d = 30;
+
+P1 = 0xFE;
+T2CON &= 0xFC;
+ET2 = 1;
+EA = 1;
+RCAP2H = 0xFF;
+RCAP2L = 0xFF;
+T2CON |= 0x4;
+
+while(1)
+{
+P2 = 0xfe;
+if(P2 == 0xfc && d > 30)
+d -= 5;
+
+P2 = 0xfb;
+if(P2 == 0xf3 && d < 50)
+d += 5;
+
+P10 = 1;
+wait(100 - d);
+P10 = 0;
+wait(d);
+}
+}
